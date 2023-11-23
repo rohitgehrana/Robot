@@ -1,20 +1,18 @@
 import openai
 
 # Set your OpenAI API key
-api_key = 'YOUR_API_KEY'
+api_key = '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'
 openai.api_key = api_key
-
-# Example conversation prompt
-conversation = """
-Human: Hello, how are you?
-AI: I'm good, thanks for asking. How about you?
-"""
+rohit = True
+while rohit:
+    # Example conversation prompt
+    conversation = input("Enter the prompt: ")
 
 # Define your completion parameters
-response = openai.Completion.create(
-  engine="text-davinci-003",
-  prompt=conversation,
-  max_tokens=50
-)
+    response = openai.Completion.create(
+    engine="text-davinci-003",
+    prompt=conversation,
+    max_tokens=50
+    )
 
-print(response.choices[0].text.strip())
+    print(response.choices[0].text.strip())
