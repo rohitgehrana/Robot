@@ -1,18 +1,65 @@
-import openai
+from openai import OpenAI
+import os
 
-# Set your OpenAI API key
-api_key = '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'
-openai.api_key = api_key
-rohit = True
-while rohit:
-    # Example conversation prompt
-    conversation = input("Enter the prompt: ")
 
-# Define your completion parameters
-    response = openai.Completion.create(
-    engine="text-davinci-003",
-    prompt=conversation,
-    max_tokens=50
+
+# Set your OpenAI API key as an environment variable
+api_key = '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'
+os.environ["OPENAI_API_KEY"] = api_key
+
+#MEMORY HOUSE
+user_conversation = [{"role": "system", "content": "Your name is Alfa and you are a human like robot whose work is to communicate with humans."}]
+
+client = OpenAI()
+
+#LOOP
+while True:
+
+
+    #USER PROMPT
+    prompt = input("enter prompt: ")
+
+
+    #MEMORIES HOUSE
+    user_conversation.append(dict(role="user", content=prompt))
+
+
+
+    #THOUGHTS HOUSE
+    response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages= user_conversation
+    )
+    response_message = response.choices[0].message.content
+    user_conversation.append(dict(role="assistant", content=response_message))
+
+    print(response_message)
+
+
+
+
+
+
+
+
+    #TEXT TO SPEECH CORNER
+    response = client.audio.speech.create(
+      model="tts-1",
+      voice="alloy",
+      input=response_message,
     )
 
-    print(response.choices[0].text.strip())
+    response.stream_to_file("output.mp3")
+
+
+
+
+
+
+
+
+    #SPEEKING CORNER
+    import vlc
+
+    player = vlc.MediaPlayer("output.mp3")
+    player.play()
