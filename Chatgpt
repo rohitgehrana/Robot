@@ -1,6 +1,7 @@
 from openai import OpenAI
 import os
-
+import pygame
+import datetime
 
 
 # Set your OpenAI API key as an environment variable
@@ -8,9 +9,11 @@ api_key = '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'
 os.environ["OPENAI_API_KEY"] = api_key
 
 #MEMORY HOUSE
-user_conversation = [{"role": "system", "content": "Your name is Alfa and you are a human like robot whose work is to communicate with humans."}]
+user_conversation = [{"role": "system", "content": "Your name is Alfa and you are a human like robot whose work is to communicate with humans. You can remember names."}]
 
 client = OpenAI()
+
+
 
 #LOOP
 while True:
@@ -52,14 +55,30 @@ while True:
     response.stream_to_file("output.mp3")
 
 
+    import pygame
+
+    # Initialize Pygame
+    pygame.init()
+
+    # Path to the MP3 file
+    mp3_file_path = "output.mp3"
+
+    # Create a Pygame mixer
+    pygame.mixer.init()
+
+    # Load the MP3 file
+    sound = pygame.mixer.Sound(mp3_file_path)
+
+    # Play the sound
+    sound.play()
+
+    # Wait for the sound to finish playing
+    pygame.time.wait(int(sound.get_length() * 1000))  # Convert seconds to milliseconds
 
 
 
 
 
 
-    #SPEEKING CORNER
-    import vlc
 
-    player = vlc.MediaPlayer("output.mp3")
-    player.play()
+
